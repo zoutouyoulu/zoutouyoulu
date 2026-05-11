@@ -14,20 +14,23 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>↗️</text></svg>">
     <style>
         :root {
-            --primary: #2563eb;
-            --accent: #d97706;
-            --bg: #f8f9fc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --subtext: #64748b;
-            --border: #e2e8f0;
-            --light: #f1f5f9;
+            --primary: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #070b1a;
+            --text: #ffffff;
+            --glass: rgba(59, 130, 246, 0.05);
+            --glass-border: rgba(59, 130, 246, 0.12);
+            --subtext: #94a3b8;
+            --dim: #475569;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(245,158,11,0.05) 0%, transparent 50%);
             color: var(--text);
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             overflow-x: hidden;
@@ -42,6 +45,7 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
+            opacity: 0.6;
         }
 
         .container {
@@ -59,7 +63,7 @@
         /* ── Logo ── */
         .logo-wrapper {
             position: relative;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             cursor: pointer;
         }
         .logo-glow {
@@ -71,18 +75,18 @@
             background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary));
             filter: blur(20px);
             animation: spin 4s linear infinite;
-            opacity: 0.15;
+            opacity: 0.35;
         }
         .logo-core {
             position: relative;
-            width: 88px; height: 88px;
-            background: #fff;
+            width: 90px; height: 90px;
+            background: #0a0f1e;
             border-radius: 50%;
-            border: 2px solid var(--border);
+            border: 2px solid rgba(59,130,246,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 0 24px rgba(59,130,246,0.1);
             overflow: hidden;
         }
         .logo-core img { width: 100%; height: 100%; object-fit: cover; }
@@ -90,9 +94,11 @@
         h1 {
             font-size: 32px;
             font-weight: 800;
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #f0f0f0, #a0aec0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .slogan {
@@ -114,12 +120,16 @@
         /* ── Bio Card ── */
         .bio-card {
             width: 100%;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px 22px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(245,158,11,0.03));
+            border: 1px solid rgba(59,130,246,0.12);
+            border-radius: 18px;
+            padding: 22px 24px;
             margin-bottom: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.04);
             text-align: left;
             position: relative;
             overflow: hidden;
@@ -128,7 +138,7 @@
             content: '';
             position: absolute;
             top: 0; left: -100%;
-            width: 100%; height: 3px;
+            width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
             animation: flow 3s infinite;
         }
@@ -137,7 +147,7 @@
             line-height: 1.9;
             color: var(--subtext);
         }
-        .bio-text strong { color: var(--text); }
+        .bio-text strong { color: #e8e8e8; }
         .tags {
             display: flex;
             gap: 8px;
@@ -148,15 +158,15 @@
             font-size: 11px;
             padding: 4px 10px;
             border-radius: 20px;
-            background: var(--light);
+            background: rgba(59,130,246,0.08);
             color: var(--subtext);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(59,130,246,0.12);
         }
 
         /* ── Links ── */
         .section-label {
             font-size: 11px;
-            color: var(--subtext);
+            color: var(--dim);
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 14px;
@@ -167,7 +177,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         .btn {
             position: relative;
@@ -176,35 +186,37 @@
             justify-content: center;
             gap: 10px;
             width: 100%;
-            padding: 13px;
-            border-radius: 12px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--text);
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #d0d0d0;
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             overflow: hidden;
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
         .btn svg {
             width: 18px; height: 18px;
             fill: currentColor;
-            transition: transform 0.2s;
+            transition: transform 0.25s;
         }
         .btn:hover svg { transform: scale(1.15); }
-        .btn-wechat:hover { border-color: #07C160; color: #07C160; }
-        .btn-douyin:hover { border-color: #FE2C55; color: #FE2C55; }
-        .btn-x:hover { border-color: #1DA1F2; color: #1DA1F2; }
+        .btn-wechat:hover { border-color: #07C160; color: #07C160; box-shadow: 0 0 20px rgba(7,193,96,0.15); }
+        .btn-douyin:hover { border-color: #FE2C55; color: #FE2C55; box-shadow: 0 0 20px rgba(254,44,85,0.15); }
+        .btn-x:hover { border-color: #1DA1F2; color: #1DA1F2; box-shadow: 0 0 20px rgba(29,161,242,0.15); }
 
         .footer {
             margin-top: 40px;
             font-size: 11px;
-            color: #94a3b8;
+            color: #334155;
         }
 
         /* ── Animations ── */
@@ -245,7 +257,7 @@
             <div class="logo-core">
                 <img src="logo_zoutouyoulu.svg"
                      alt="走投有路 Logo"
-                     onerror="this.style.display='none';this.parentElement.innerHTML=`<svg class='logo-icon' viewBox='0 0 400 400' fill='none'><path d='M100 300 L200 150 L320 60' stroke='#2563eb' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/><circle cx='320' cy='60' r='16' fill='#d97706'/></svg>`">
+                     onerror="this.style.display='none';this.parentElement.innerHTML=`<svg class='logo-icon' viewBox='0 0 400 400' fill='none'><path d='M100 300 L200 150 L320 60' stroke='#3b82f6' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/><circle cx='320' cy='60' r='16' fill='#f59e0b'/></svg>`">
             </div>
         </div>
 
@@ -293,7 +305,7 @@
     </div>
 
     <script>
-        const text = "用 AI 武装头脑，让投资少走弯路";
+        const text = "与 AI 同行，让投资有路";
         const typeEl = document.getElementById('typewriter');
         let i = 0;
         function typeWriter() {
@@ -320,26 +332,29 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.3;
-                this.alpha = Math.random() * 0.5 + 0.2;
-                this.speed = Math.random() * 0.02 + 0.01;
+                this.size = Math.random() * 2 + 0.5;
+                this.alpha = Math.random() * 0.6 + 0.2;
+                this.speed = Math.random() * 0.02 + 0.005;
                 this.direction = Math.random() > 0.5 ? 1 : -1;
+                this.color = Math.random() > 0.3 ? '#3b82f6' : '#f59e0b';
             }
             update() {
                 this.alpha += this.speed * this.direction;
-                if (this.alpha > 0.7 || this.alpha < 0.1) this.direction *= -1;
+                if (this.alpha > 0.8 || this.alpha < 0.1) this.direction *= -1;
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(37, 99, 235, ${this.alpha})`;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
                 ctx.fill();
+                ctx.globalAlpha = 1;
             }
         }
 
         function initStars() {
             stars = [];
-            const count = Math.min(Math.floor(window.innerWidth / 12), 70);
+            const count = Math.min(Math.floor(window.innerWidth / 10), 80);
             for (let i = 0; i < count; i++) stars.push(new Star());
         }
 
