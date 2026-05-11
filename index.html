@@ -14,22 +14,20 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>↗️</text></svg>">
     <style>
         :root {
-            --primary: #3b82f6;
-            --accent: #f59e0b;
-            --bg: #070b14;
-            --text: #ffffff;
-            --glass: rgba(59, 130, 246, 0.04);
-            --glass-border: rgba(59, 130, 246, 0.12);
-            --subtext: #94a3b8;
+            --primary: #2563eb;
+            --accent: #d97706;
+            --bg: #f8f9fc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --subtext: #64748b;
+            --border: #e2e8f0;
+            --light: #f1f5f9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg);
-            background-image:
-                radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.04) 0%, transparent 50%);
             color: var(--text);
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             overflow-x: hidden;
@@ -44,7 +42,6 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            opacity: 0.35;
         }
 
         .container {
@@ -52,7 +49,7 @@
             z-index: 1;
             width: 100%;
             max-width: 480px;
-            padding: 48px 20px 40px;
+            padding: 60px 20px 40px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -62,7 +59,7 @@
         /* ── Logo ── */
         .logo-wrapper {
             position: relative;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             cursor: pointer;
         }
         .logo-glow {
@@ -72,32 +69,30 @@
             width: 100px; height: 100px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary));
-            filter: blur(18px);
+            filter: blur(20px);
             animation: spin 4s linear infinite;
-            opacity: 0.4;
+            opacity: 0.15;
         }
         .logo-core {
             position: relative;
-            width: 92px; height: 92px;
-            background: #0a0a0a;
+            width: 88px; height: 88px;
+            background: #fff;
             border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 24px rgba(59,130,246,0.15);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
             overflow: hidden;
         }
         .logo-core img { width: 100%; height: 100%; object-fit: cover; }
 
         h1 {
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 800;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, #e8e8e8, #999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            color: var(--text);
         }
 
         .slogan {
@@ -119,25 +114,21 @@
         /* ── Bio Card ── */
         .bio-card {
             width: 100%;
-            background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(245,158,11,0.03));
-            border: 1px solid rgba(59,130,246,0.12);
-            border-radius: 20px;
-            padding: 22px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
             margin-bottom: 32px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            text-align: left;
             position: relative;
             overflow: hidden;
-            box-shadow:
-                0 8px 32px rgba(0,0,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-            text-align: left;
         }
         .bio-card::before {
             content: '';
             position: absolute;
             top: 0; left: -100%;
-            width: 100%; height: 2px;
+            width: 100%; height: 3px;
             background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
             animation: flow 3s infinite;
         }
@@ -146,7 +137,7 @@
             line-height: 1.9;
             color: var(--subtext);
         }
-        .bio-text strong { color: #e8e8e8; }
+        .bio-text strong { color: var(--text); }
         .tags {
             display: flex;
             gap: 8px;
@@ -157,15 +148,15 @@
             font-size: 11px;
             padding: 4px 10px;
             border-radius: 20px;
-            background: rgba(59,130,246,0.08);
+            background: var(--light);
             color: var(--subtext);
-            border: 1px solid rgba(59,130,246,0.12);
+            border: 1px solid var(--border);
         }
 
         /* ── Links ── */
         .section-label {
             font-size: 11px;
-            color: #555;
+            color: var(--subtext);
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 14px;
@@ -176,7 +167,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .btn {
             position: relative;
@@ -185,49 +176,35 @@
             justify-content: center;
             gap: 10px;
             width: 100%;
-            padding: 14px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            color: #ddd;
+            padding: 13px;
+            border-radius: 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.2s ease;
             overflow: hidden;
         }
-        .btn:hover, .btn:active {
+        .btn:hover {
             transform: translateY(-2px);
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
         .btn svg {
             width: 18px; height: 18px;
             fill: currentColor;
-            transition: transform 0.3s;
+            transition: transform 0.2s;
         }
-        .btn:hover svg { transform: scale(1.1); }
-        .btn-wechat:hover {
-            border-color: #07C160;
-            color: #07C160;
-            box-shadow: 0 0 18px rgba(7, 193, 96, 0.2);
-        }
-        .btn-douyin:hover {
-            border-color: #FE2C55;
-            color: #FE2C55;
-            box-shadow: 0 0 18px rgba(254, 44, 85, 0.2);
-        }
-        .btn-x:hover {
-            border-color: #1DA1F2;
-            color: #1DA1F2;
-            box-shadow: 0 0 18px rgba(29, 161, 242, 0.2);
-        }
+        .btn:hover svg { transform: scale(1.15); }
+        .btn-wechat:hover { border-color: #07C160; color: #07C160; }
+        .btn-douyin:hover { border-color: #FE2C55; color: #FE2C55; }
+        .btn-x:hover { border-color: #1DA1F2; color: #1DA1F2; }
 
         .footer {
             margin-top: 40px;
             font-size: 11px;
-            color: #3a3a4a;
+            color: #94a3b8;
         }
 
         /* ── Animations ── */
@@ -245,12 +222,12 @@
         }
         .fade-in {
             opacity: 0;
-            transform: translateY(18px);
-            animation: fadeInUp 0.7s forwards;
+            transform: translateY(16px);
+            animation: fadeInUp 0.6s forwards;
         }
-        .delay-1 { animation-delay: 0.15s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.45s; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.25s; }
+        .delay-3 { animation-delay: 0.4s; }
         @keyframes fadeInUp {
             to { opacity: 1; transform: translateY(0); }
         }
@@ -268,7 +245,7 @@
             <div class="logo-core">
                 <img src="logo_zoutouyoulu.svg"
                      alt="走投有路 Logo"
-                     onerror="this.style.display='none';this.parentElement.innerHTML=`<svg class='logo-icon' viewBox='0 0 400 400' fill='none'><path d='M100 300 L200 150 L320 60' stroke='#ffffff' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/><circle cx='320' cy='60' r='16' fill='#D4AF37'/></svg>`">
+                     onerror="this.style.display='none';this.parentElement.innerHTML=`<svg class='logo-icon' viewBox='0 0 400 400' fill='none'><path d='M100 300 L200 150 L320 60' stroke='#2563eb' stroke-width='28' stroke-linecap='round' stroke-linejoin='round'/><circle cx='320' cy='60' r='16' fill='#d97706'/></svg>`">
             </div>
         </div>
 
@@ -326,74 +303,55 @@
                 setTimeout(typeWriter, 100);
             }
         }
-        setTimeout(typeWriter, 800);
+        setTimeout(typeWriter, 600);
 
+        // Stars
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let particles = [];
+        let stars = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
 
-        class Particle {
+        class Star {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 0.5;
-                this.alpha = Math.random() * 0.4 + 0.2;
-                this.color = Math.random() > 0.5 ? '#3b82f6' : '#f59e0b';
+                this.size = Math.random() * 2 + 0.3;
+                this.alpha = Math.random() * 0.5 + 0.2;
+                this.speed = Math.random() * 0.02 + 0.01;
+                this.direction = Math.random() > 0.5 ? 1 : -1;
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
+                this.alpha += this.speed * this.direction;
+                if (this.alpha > 0.7 || this.alpha < 0.1) this.direction *= -1;
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = `rgba(37, 99, 235, ${this.alpha})`;
                 ctx.fill();
-                ctx.globalAlpha = 1;
             }
         }
 
-        function initParticles() {
-            particles = [];
-            const count = Math.min(Math.floor(window.innerWidth / 10), 80);
-            for (let i = 0; i < count; i++) particles.push(new Particle());
+        function initStars() {
+            stars = [];
+            const count = Math.min(Math.floor(window.innerWidth / 12), 70);
+            for (let i = 0; i < count; i++) stars.push(new Star());
         }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(255,255,255,${0.06 - dist/2000})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
+            stars.forEach(s => { s.update(); s.draw(); });
             requestAnimationFrame(animate);
         }
 
-        window.addEventListener('resize', () => { resize(); initParticles(); });
+        window.addEventListener('resize', () => { resize(); initStars(); });
         resize();
-        initParticles();
+        initStars();
         animate();
     </script>
 </body>
