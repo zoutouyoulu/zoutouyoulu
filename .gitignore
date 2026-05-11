@@ -1,0 +1,22 @@
+# macOS 系统文件
+.DS_Store
+Thumbs.db
+
+# 敏感配置文件
+.env
+*.env.local
+**/config/private*.yaml
+**/config/secret*.json
+**/tokens.txt
+**/api_keys.txt
+
+# 依赖缓存
+node_modules/
+vendor/
+.bundle/
+
+# 构建产物
+dist/
+build/
+*.zip
+*.tar.gz

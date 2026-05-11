@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>走投有路 | ZoutouYouLu</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #050505;
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 480px;
+            padding: 60px 20px 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            margin-bottom: 32px;
+            cursor: pointer;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary));
+            filter: blur(15px);
+            animation: spin 4s linear infinite;
+            opacity: 0.5;
+        }
+
+        .logo-core {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: #0a0a0a;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        
+        .logo-core img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-icon path, .logo-icon circle {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slogan {
+            font-size: 15px;
+            color: #888;
+            height: 24px;
+            margin-bottom: 32px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 14px;
+            background-color: var(--accent);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        .bio-card {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .bio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+            animation: flow 3s infinite;
+        }
+
+        .bio-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #ccc;
+            text-align: left;
+        }
+
+        .bio-text strong {
+            color: #fff;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .links {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+        }
+
+        .btn:hover, .btn:active {
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        .btn-wechat:hover { border-color: #07C160; box-shadow: 0 0 15px rgba(7, 193, 96, 0.3); }
+        .btn-douyin:hover { border-color: #FE2C55; box-shadow: 0 0 15px rgba(254, 44, 85, 0.3); }
+        .btn-x:hover { border-color: #1DA1F2; box-shadow: 0 0 15px rgba(29, 161, 242, 0.3); }
+
+        .footer {
+            margin-top: 48px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes flow {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        
+        <div class="logo-wrapper fade-in">
+            <div class="logo-glow"></div>
+            <div class="logo-core">
+                <!-- 纯粹路径 - 上升折线 + 金色终点 -->
+                <svg class="logo-icon" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 300 L200 150 L320 60" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="320" cy="60" r="16" fill="#D4AF37"/>
+                </svg>
+            </div>
+        </div>
+
+        <h1 class="fade-in delay-1">走投有路</h1>
+        
+        <div class="slogan fade-in delay-1">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <div class="bio-card fade-in delay-2">
+            <p class="bio-text">
+                👋 你好，这里是 <strong>走投有路</strong>。<br><br>
+                我不做高高在上的“股神”，只做你投资路上的<strong>AI 探路者</strong>。<br><br>
+                在这里，我们用 AI 拆解研报、过滤噪音、寻找确定性。
+            </p>
+            <div class="tags">
+                <span class="tag">🤖 AI 赋能</span>
+                <span class="tag">📈 投资逻辑</span>
+                <span class="tag">🧠 认知进化</span>
+            </div>
+        </div>
+
+        <div class="links fade-in delay-3">
+            <a href="#" class="btn btn-wechat">
+                <svg viewBox="0 0 24 24"><path d="M8.5 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm.5 4c-1.7 0-3.5-1.5-3.5-3.5s1.5-3.5 3.5-3.5 3.5 1.5 3.5 3.5-1.8 3.5-3.5 3.5zM22 12c0 4.4-4.5 8-10 8-1.3 0-2.5-.2-3.7-.6L4 20.5l1.3-3.2C2.4 16 1 14.2 1 12 1 7.6 5.5 4 11 4s10 3.6 10 8h-1z"/></svg>
+                关注公众号
+            </a>
+            
+            <a href="#" class="btn btn-douyin">
+                <svg viewBox="0 0 24 24"><path d="M19 8h-2v7.2c0 1.6-1.3 2.8-2.8 2.8s-2.8-1.2-2.8-2.8c0-1.6 1.3-2.8 2.8-2.8.6 0 1.1.1 1.5.5V9.6c-.5-.2-1-.3-1.5-.3-3 0-5.5 2.5-5.5 5.5s2.5 5.5 5.5 5.5 5.5-2.5 5.5-5.5V8h-2zm-1.5 7.5v-8c2.5.6 4.5 2.7 5.1 5.2l-1.5.3c-.5-2.1-2.1-3.7-4.1-4.1l.1-.1.1-.1.1-.1.1-.1.1-.1h.1l.1-.1v.1l.1-.1.1-.1.1-.1.1-.1z"/></svg>
+                关注抖音
+            </a>
+
+            <a href="#" class="btn btn-x">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                关注 X (Twitter)
+            </a>
+        </div>
+
+        <div class="footer fade-in delay-3">
+            © 2026 走投有路 · 投资探索计划
+        </div>
+
+    </div>
+
+    <script>
+        const text = "用 AI 武装头脑，让投资少走弯路";
+        const typeEl = document.getElementById('typewriter');
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                typeEl.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        setTimeout(typeWriter, 800);
+
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.color = Math.random() > 0.5 ? '#3b82f6' : '#f59e0b';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(window.innerWidth / 10, 80);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255,255,255,${0.1 - dist/1200})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        resize();
+        initParticles();
+        animate();
+    </script>
+</body>
+</html>
