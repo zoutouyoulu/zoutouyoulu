@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ComfyUI 本地文生图模型对比指南 · 走投有路</title>
+    <meta name="description" content="主流开源文生图模型（SDXL / SDXL Turbo / SD3.5 Medium / Flux.1 Schnell）的区别、特点与选择建议。">
+    <meta property="og:title" content="ComfyUI 本地文生图模型对比指南 · 走投有路">
+    <meta property="og:description" content="主流开源文生图模型的区别、特点与选择建议">
+    <meta property="og:url" content="https://zoutouyoulu.com/tutorials/comfyui-guide.html">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #070b1a;
+            --text: #e8e8e8;
+            --glass: rgba(59, 130, 246, 0.05);
+            --glass-border: rgba(59, 130, 246, 0.12);
+            --subtext: #94a3b8;
+            --dim: #475569;
+            --code-bg: #0d1125;
+            --border: rgba(59,130,246,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 20% 10%, rgba(59,130,246,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 90%, rgba(245,158,11,0.02) 0%, transparent 40%);
+            color: var(--text);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', Roboto, sans-serif;
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 32px 24px 60px;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header a {
+            color: var(--subtext);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .header a:hover { color: var(--primary); }
+        .header .site-name {
+            font-weight: 700;
+            font-size: 16px;
+            background: linear-gradient(to right, #f0f0f0, #a0aec0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ── Article ── */
+        article h1 {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+        article .subtitle {
+            color: var(--subtext);
+            font-size: 15px;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        article h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 36px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        article h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 28px 0 10px;
+        }
+        article p {
+            margin-bottom: 16px;
+            color: #d0d0d0;
+        }
+        article a { color: var(--primary); text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+        article strong { color: #f0f0f0; }
+
+        /* ── Lists ── */
+        article ul, article ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            color: #d0d0d0;
+        }
+        article li { margin-bottom: 6px; }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        article table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 600px;
+        }
+        article th {
+            background: rgba(59,130,246,0.08);
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #c0c0c0;
+            border-bottom: 1px solid var(--border);
+        }
+        article td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: #b0b0b0;
+        }
+        article tr:last-child td { border-bottom: none; }
+        article tr:hover td { background: rgba(59,130,246,0.03); }
+
+        /* ── Code ── */
+        article code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: #f59e0b;
+        }
+        article pre {
+            background: var(--code-bg);
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59,130,246,0.06);
+            overflow-x: auto;
+        }
+        article pre code {
+            background: none;
+            padding: 0;
+            color: #b0c4de;
+        }
+
+        /* ── Blockquote ── */
+        article blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 10px 16px;
+            margin: 16px 0;
+            background: rgba(245,158,11,0.04);
+            border-radius: 0 8px 8px 0;
+            color: #c0a060;
+        }
+        article blockquote p { margin-bottom: 0; }
+
+        /* ── Separator ── */
+        hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+        }
+
+        /* ── Notes / Warnings ── */
+        .note {
+            padding: 12px 16px;
+            margin: 16px 0;
+            border-radius: 10px;
+            font-size: 14px;
+            border: 1px solid rgba(245,158,11,0.2);
+            background: rgba(245,158,11,0.05);
+            color: #c0a060;
+        }
+        .note strong { color: var(--accent); }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: #334155;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="site-name">← 走投有路</a>
+            <a href="/tutorials/">📖 教程</a>
+        </div>
+
+        <article>
+            <h1>ComfyUI 本地文生图模型对比指南</h1>
+            <p class="subtitle">主流开源模型的区别、特点与选择建议</p>
+
+            <h2>概述</h2>
+            <p>
+                ComfyUI 支持多种文生图模型，本文介绍最常用的四款开源模型，帮助你在不同场景下选择最合适的模型。
+            </p>
+
+            <h2>模型速览</h2>
+            <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>SDXL</th>
+                        <th>SDXL Turbo</th>
+                        <th>SD3.5 Medium</th>
+                        <th>Flux.1 Schnell</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>文件大小</strong></td><td>6.9GB</td><td>6.9GB</td><td>~7GB</td><td>~12GB</td></tr>
+                    <tr><td><strong>生图速度 (M4)</strong></td><td>1-2 分钟</td><td>3-10 秒</td><td>1-2 分钟</td><td>1-2 分钟</td></tr>
+                    <tr><td><strong>图像质量</strong></td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td><strong>支持中文提示词</strong></td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+                    <tr><td><strong>最佳分辨率</strong></td><td>1024×1024</td><td>512×512</td><td>1024×1024</td><td>1024×1024</td></tr>
+                    <tr><td><strong>推荐步数</strong></td><td>20-30</td><td>4-8</td><td>20-30</td><td>4-8</td></tr>
+                    <tr><td><strong>发布时间</strong></td><td>2024</td><td>2024</td><td>2025</td><td>2024</td></tr>
+                    <tr><td><strong>开发者</strong></td><td>Stability AI</td><td>Stability AI</td><td>Stability AI</td><td>Black Forest Labs</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h2>各模型详细介绍</h2>
+
+            <h3>1. SDXL (Stable Diffusion XL) — 你最熟悉的模型</h3>
+            <p><strong>文件：</strong> <code>sd_xl_base_1.0.safetensors</code>（6.9GB）</p>
+            <p>这是目前最主流的开源文生图模型，你已经在用。</p>
+            <p><strong>优点：</strong></p>
+            <ul>
+                <li>质量高，细节丰富</li>
+                <li>社区资源最多（LoRA、ControlNet 全支持）</li>
+                <li>1024×1024 最佳分辨率</li>
+            </ul>
+            <p><strong>缺点：</strong></p>
+            <ul>
+                <li>生图慢，M4 上一张图 1-2 分钟</li>
+                <li>不支持中文提示词</li>
+                <li>需要较高显卡内存</li>
+            </ul>
+            <p><strong>适合场景：</strong></p>
+            <ul>
+                <li>公众号封面、海报等需要精细质量的图片</li>
+                <li>配合 LoRA 做特定风格（头像、产品图）</li>
+            </ul>
+            <p><strong>KSampler 参数推荐：</strong></p>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>参数</th><th>推荐值</th></tr></thead>
+                <tbody>
+                    <tr><td>steps</td><td>20-30</td></tr>
+                    <tr><td>cfg</td><td>7</td></tr>
+                    <tr><td>sampler</td><td>euler</td></tr>
+                    <tr><td>scheduler</td><td>normal</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <hr>
+
+            <h3>2. SDXL Turbo — 极速出图</h3>
+            <p><strong>文件：</strong> <code>sd_xl_turbo_1.0.safetensors</code>（6.9GB）</p>
+            <p>SDXL 的加速版本，用对抗蒸馏技术将生图速度提升 10 倍以上。</p>
+            <p><strong>优点：</strong></p>
+            <ul>
+                <li><strong>极快：</strong> 3-10 秒出一张图</li>
+                <li>跟 SDXL 共享大部分生态（LoRA、ControlNet 兼容）</li>
+                <li>同样 6.9GB，空间占用一样</li>
+            </ul>
+            <p><strong>缺点：</strong></p>
+            <ul>
+                <li>细节不如 SDXL 丰富，放大看边缘偏模糊</li>
+                <li>最佳分辨率 512×512（跟手机抖音尺寸接近）</li>
+                <li>不支持中文提示词</li>
+            </ul>
+            <p><strong>适合场景：</strong></p>
+            <ul>
+                <li>抖音视频配图（手机上看不出区别）</li>
+                <li>快速试灵感（先看构图，再换 SDXL 出精图）</li>
+                <li>批量生成（一天几百张无压力）</li>
+            </ul>
+            <p><strong>KSampler 参数推荐：</strong></p>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>参数</th><th>推荐值</th></tr></thead>
+                <tbody>
+                    <tr><td>steps</td><td>4-8 <span style="color:var(--accent);font-weight:600;">(重要！不是 20)</span></td></tr>
+                    <tr><td>cfg</td><td>2-4</td></tr>
+                    <tr><td>sampler</td><td>euler</td></tr>
+                    <tr><td>scheduler</td><td>normal</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="note">
+                <strong>⚠️ 关键区别：</strong> 用 Turbo 时 steps 不能超过 8，否则反而会变差。这是 Turbo 模型的特性。
+            </div>
+
+            <hr>
+
+            <h3>3. SD3.5 Medium — 中文友好</h3>
+            <p><strong>文件：</strong> <code>sd3.5_medium.safetensors</code>（~7GB）</p>
+            <p>Stability AI 2025 年发布的第三代模型，<strong>原生支持中文提示词</strong>。</p>
+            <p><strong>优点：</strong></p>
+            <ul>
+                <li>✅ <strong>支持中文提示词</strong>，直接输入中文即可</li>
+                <li>质量跟 SDXL 相当</li>
+                <li>对文字/手部等细节有改善</li>
+            </ul>
+            <p><strong>缺点：</strong></p>
+            <ul>
+                <li>社区生态不如 SDXL 丰富（LoRA 少）</li>
+                <li>速度跟 SDXL 一样慢</li>
+                <li>体积跟 SDXL 差不多</li>
+            </ul>
+            <p><strong>适合场景：</strong></p>
+            <ul>
+                <li>不想写英文 prompt，直接用中文</li>
+                <li>需要生成中文文字/海报的场景</li>
+            </ul>
+            <p><strong>KSampler 参数推荐：</strong></p>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>参数</th><th>推荐值</th></tr></thead>
+                <tbody>
+                    <tr><td>steps</td><td>20-30</td></tr>
+                    <tr><td>cfg</td><td>7</td></tr>
+                    <tr><td>sampler</td><td>euler</td></tr>
+                    <tr><td>scheduler</td><td>normal</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <hr>
+
+            <h3>4. Flux.1 Schnell — 目前质量最高的开源模型</h3>
+            <p><strong>文件：</strong> <code>flux1-schnell.safetensors</code>（~12GB）</p>
+            <p>Black Forest Labs（前 Stability AI 核心团队）出品，目前公认质量最高的开源文生图模型。</p>
+            <p><strong>优点：</strong></p>
+            <ul>
+                <li><strong>质量最高</strong>，细节、光影、构图都明显优于 SDXL</li>
+                <li>对复杂 prompt 的理解更强</li>
+                <li>支持 4-8 步快速出图（跟 Turbo 类似）</li>
+            </ul>
+            <p><strong>缺点：</strong></p>
+            <ul>
+                <li><strong>体积大：</strong> 12GB，硬盘和内存占用都高</li>
+                <li>M4 上加载慢（加载模型约需 4-6GB 内存）</li>
+                <li>社区生态不如 SDXL 丰富</li>
+                <li>不支持中文提示词</li>
+            </ul>
+            <p><strong>适合场景：</strong></p>
+            <ul>
+                <li>需要最高质量输出（画册、印刷、封面）</li>
+                <li>不介意等待时间</li>
+                <li>电脑有足够的内存和硬盘</li>
+            </ul>
+            <p><strong>KSampler 参数推荐：</strong></p>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>参数</th><th>推荐值</th></tr></thead>
+                <tbody>
+                    <tr><td>steps</td><td>4-8</td></tr>
+                    <tr><td>cfg</td><td>3.5</td></tr>
+                    <tr><td>sampler</td><td>euler</td></tr>
+                    <tr><td>scheduler</td><td>simple</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="note">
+                Flux 需要搭配特定的 CLIP 加载器和 VAE，工作流跟 SDXL 不太一样，需要单独搭建。
+            </div>
+
+            <h2>实际表现对比</h2>
+            <p>以 prompt <code>a cute cat, soft lighting, detailed fur</code> 为例：</p>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>模型</th><th>生图时间</th><th>细节表现</th><th>色彩</th></tr></thead>
+                <tbody>
+                    <tr><td>SDXL</td><td>~90s</td><td>毛发根根分明，眼睛有神</td><td>自然</td></tr>
+                    <tr><td>SDXL Turbo</td><td>~5s</td><td>整体对了，放大看毛发糊</td><td>偏淡</td></tr>
+                    <tr><td>SD3.5</td><td>~90s</td><td>跟 SDXL 差不多</td><td>略鲜艳</td></tr>
+                    <tr><td>Flux</td><td>~60s</td><td>最好，堪比真人照片</td><td>最佳</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h2>如何选择</h2>
+
+            <h3>按需求选</h3>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>场景</th><th>推荐模型</th><th>理由</th></tr></thead>
+                <tbody>
+                    <tr><td>抖音配图（批量）</td><td><strong>SDXL Turbo</strong></td><td>快，手机上看不出区别</td></tr>
+                    <tr><td>公众号封面</td><td><strong>SDXL</strong></td><td>质量好，生态丰富</td></tr>
+                    <tr><td>写中文 prompt</td><td><strong>SD3.5 Medium</strong></td><td>原生中文支持</td></tr>
+                    <tr><td>高质量输出</td><td><strong>Flux.1 Schnell</strong></td><td>效果最好</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>按电脑配置选</h3>
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>Mac Mini M4 16GB</th><th>推荐</th></tr></thead>
+                <tbody>
+                    <tr><td>512GB 硬盘</td><td>所有模型都能装</td></tr>
+                    <tr><td>16GB 内存</td><td>一次只加载一个没问题</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>推荐下载顺序</h3>
+            <ol>
+                <li><strong>SDXL Turbo</strong>（先用快的）</li>
+                <li><strong>SDXL</strong>（你已经有了）</li>
+                <li><strong>SD3.5 Medium</strong>（中文支持）</li>
+                <li><strong>Flux</strong>（最后，质量最高但最重）</li>
+            </ol>
+
+            <h2>如何在 ComfyUI 中切换模型</h2>
+            <p>只需要在 <strong>加载 Checkpoint（简易）</strong> 节点的 <code>ckpt_name</code> 下拉菜单中选择即可：</p>
+            <pre><code>sd_xl_base_1.0.safetensors     ← SDXL（你现在用的）
+sd_xl_turbo_1.0.safetensors     ← Turbo（快）
+sd3.5_medium.safetensors        ← SD3.5（中文）
+flux1-schnell.safetensors       ← Flux（高质量）</code></pre>
+            <p>切换后按使用对应的参数（尤其是 steps），其他节点不用改。</p>
+
+            <h2>注意事项</h2>
+            <ol>
+                <li><strong>Turbo 和 Flux 步数要少：</strong> 4-8 步，超过反而变差</li>
+                <li><strong>SDXL 和 SD3.5 步数要多：</strong> 20-30 步</li>
+                <li>模型只存硬盘，不运行不占资源</li>
+                <li>一次只加载一个模型，多个模型不会同时占用内存</li>
+            </ol>
+        </article>
+
+        <footer>
+            © 2026 走投有路 · 投资探索计划
+        </footer>
+    </div>
+</body>
+</html>

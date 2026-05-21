@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>教程 · 走投有路</title>
+    <meta name="description" content="走投有路 AI 实用教程系列 — 帮你用 AI 提效，少走弯路。">
+    <meta property="og:title" content="教程 · 走投有路">
+    <meta property="og:description" content="AI 实用教程，帮你少走弯路">
+    <meta property="og:url" content="https://zoutouyoulu.com/tutorials/">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #070b1a;
+            --text: #ffffff;
+            --glass: rgba(59, 130, 246, 0.05);
+            --glass-border: rgba(59, 130, 246, 0.12);
+            --subtext: #94a3b8;
+            --dim: #475569;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(245,158,11,0.03) 0%, transparent 50%);
+            color: var(--text);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(59,130,246,0.1);
+        }
+        .header a {
+            color: var(--subtext);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .header a:hover { color: var(--primary); }
+        .header .site-name {
+            font-weight: 700;
+            font-size: 16px;
+            background: linear-gradient(to right, #f0f0f0, #a0aec0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ── Article List ── */
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .page-desc {
+            color: var(--subtext);
+            font-size: 14px;
+            margin-bottom: 36px;
+        }
+
+        .article-card {
+            display: block;
+            padding: 24px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.04), rgba(245,158,11,0.02));
+            border: 1px solid rgba(59,130,246,0.08);
+            border-radius: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s ease;
+        }
+        .article-card:hover {
+            border-color: rgba(59,130,246,0.2);
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(245,158,11,0.04));
+        }
+        .article-card .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .article-card .meta {
+            font-size: 12px;
+            color: var(--dim);
+            margin-bottom: 8px;
+        }
+        .article-card .desc {
+            font-size: 14px;
+            color: var(--subtext);
+            line-height: 1.6;
+        }
+        .article-card .tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .article-card .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(59,130,246,0.08);
+            color: var(--subtext);
+            border: 1px solid rgba(59,130,246,0.1);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            font-size: 11px;
+            color: #334155;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="site-name">← 走投有路</a>
+            <a href="/">首页</a>
+        </div>
+
+        <h1 class="page-title">📖 AI 教程</h1>
+        <p class="page-desc">实用教程系列 — 用 AI 武装头脑，做事少走弯路。</p>
+
+        <a class="article-card" href="comfyui-guide.html">
+            <div class="title">ComfyUI 本地文生图模型对比指南</div>
+            <div class="meta">2026-05-22 · 约 7 分钟阅读</div>
+            <div class="desc">
+                主流开源文生图模型（SDXL / SDXL Turbo / SD3.5 Medium / Flux.1 Schnell）的区别、特点与选择建议。帮你用 ComfyUI 在 Mac Mini 上做出最合适的模型选择。
+            </div>
+            <div class="tags">
+                <span class="tag">ComfyUI</span>
+                <span class="tag">AI 绘图</span>
+                <span class="tag">教程</span>
+            </div>
+        </a>
+    </div>
+
+    <footer>
+        © 2026 走投有路 · 投资探索计划
+    </footer>
+</body>
+</html>
